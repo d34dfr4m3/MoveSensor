@@ -14,19 +14,24 @@ void setup()
 
 void loop()
 {
-  float cmMsec;
+  delay(1500);
+  float cmMsec,last;
   long microsec = ultrasonic.timing();
-  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
-  if (cmMsec <= 80){
-    digitalWrite(13,HIGH);
-    Serial.print("Move:");
-    Serial.println(cmMsec);
-    delay(40000);
-  }
+  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM); //Primeira Amostra
+  if (cmMsec < 80){
+    delay(1500);
+    microsec = ultrasonic.timing();
+    last = ultrasonic.convert(microsec, Ultrasonic::CM); //Segunda Amostra
+    if ( last < cmMsec ){
+        digitalWrite(13,HIGH);
+        Serial.print("Move:");
+        Serial.println(cmMsec); 
+        delay(2000);
+      
+    }
+  }     
   else{
     digitalWrite(13, LOW);  
-
-  }
-  delay(250);
+ }
 }
 
